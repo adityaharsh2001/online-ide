@@ -1,15 +1,14 @@
 const express = require("express");
-const routes = require("./api/routes/routes");
+const cors = require("cors");
+const routes = require("./api/routes/routes")
 const app = express();
 
-app.use(express.json());
+
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api", routes);
+app.use(express.json());
+app.use("/", routes);
 
-app.get("/", (req, res) => {
-  res.json({ hello: "world" });
+app.listen(5000, () => {
+  console.log(`Listening on port 5000!`);
 });
-
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));

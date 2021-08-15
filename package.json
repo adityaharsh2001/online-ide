@@ -1,21 +1,18 @@
 {
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aditya Harsh <geekyadi118@gmail.com>",
+  "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "uuid": "^8.3.2"
   },
-  "name": "online-code-ide",
-  "version": "1.0.0",
-  "description": "A Simple One Code Editor",
-  "main": "index.js",
-  "license": "MIT",
-  "repository": "git@github.com:adityaharsh2001/online-ide.git",
-  "author": "Aditya Harsh",
-  "private": true,
-  "scripts": {
-    "start": "node index.js"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.12"
-  }
+  "repository": "git@github.com:adityaharsh2001/online-ide.git"
 }
