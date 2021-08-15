@@ -3,7 +3,7 @@ const { post } = require('got');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('fuck');
+  res.send('new');
 });
 
 app.post("/run", (req, res) => {
