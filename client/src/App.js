@@ -4,13 +4,14 @@ import React, { useState } from "react";
 
 function App() {
   const [code, setCode] = useState("");
-  const [language, SetLanguage] = useState("");
+  const [language, SetLanguage] = useState("cpp");
   const [output, setOutput] = useState("");
-
+  const [input,SetInput] = useState("");
   const handleSubmit = async () => {
     const payload = {
       language,
       code,
+      input,
     };
     try {
       const { data } = await axios.post("http://localhost:5000/run", payload);
@@ -45,9 +46,9 @@ function App() {
       <textarea
         rows="10"
         cols="35"
-        value={code}
+        value={input}
         onChange={(e) => {
-          setCode(e.target.value);
+          SetInput(e.target.value);
         }}
       ></textarea>
       <br />
