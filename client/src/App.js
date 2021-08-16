@@ -4,11 +4,12 @@ import React, { useState } from "react";
 
 function App() {
   const [code, setCode] = useState("");
+  const [language, SetLanguage] = useState("");
   const [output, setOutput] = useState("");
 
   const handleSubmit = async () => {
     const payload = {
-      language: "cpp",
+      language,
       code,
     };
     try {
@@ -22,9 +23,28 @@ function App() {
   return (
     <div className="App">
       <h1>Online Code Compiler</h1>
+      <div>
+        <select
+          onChange={(e) => {
+            SetLanguage(e.target.value);
+          }}
+          value={language}
+        >
+          <option value="cpp">C++</option>
+          <option value="py">Python</option>
+        </select>
+      </div>
       <textarea
         rows="20"
         cols="75"
+        value={code}
+        onChange={(e) => {
+          setCode(e.target.value);
+        }}
+      ></textarea>
+      <textarea
+        rows="10"
+        cols="35"
         value={code}
         onChange={(e) => {
           setCode(e.target.value);
