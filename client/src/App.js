@@ -7,6 +7,8 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
+import "ace-builds/src-noconflict/snippets/c_cpp";
+import 'brace/ext/language_tools';
 
 function App() {
   const [code, setCode] = useState("");
@@ -87,7 +89,8 @@ function App() {
           name="UNIQUE_ID_OF_DIV"
           editorProps={{ $blockScrolling: true }}
           style={{ width: "50vw", height: "70vh", fontSize: "15px" }}
-          showPrintMargin="false"
+          showPrintMargin={false}
+          highlightActiveLine={false}
           setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
@@ -114,6 +117,7 @@ function App() {
           width: "100vw",
           height: "25vh",
           fontSize: "15px",
+          color:"#fff"
         }}
         rows="10"
         cols="35"
