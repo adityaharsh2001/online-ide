@@ -10,17 +10,17 @@ router.get("/", (req, res) => {
 });
 
 router.post("/run", async (req, res) => {
-  const { language, code, input } = req.body;
+  const { ext, code, input } = req.body;
 
   if (code === undefined) {
     return res.status(400).json({ success: false, error: "Empty code body!" });
   }
   try {
-    console.log(language);
-    const filepath = await generateFile(language, code, input);
+    console.log(ext);
+    const filepath = await generateFile(ext, code, input);
     let output;
-    if (language === "cpp") output = await executeCpp(filepath);
-    else if (language === "py") {
+    if (ext === "cpp") output = await executeCpp(filepath);
+    else if (ext === "py") {
       output = await executePy(filepath);
     }
     return res.json({ filepath, output });

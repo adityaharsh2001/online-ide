@@ -2,22 +2,23 @@ import axios from "axios";
 import "./App.css";
 import React, { useState } from "react";
 import AceEditor from "react-ace";
-
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/snippets/c_cpp";
-import 'brace/ext/language_tools';
+import "brace/ext/language_tools";
 
-function App() {
+const App = () =>{
   const [code, setCode] = useState("");
-  const [language, SetLanguage] = useState("cpp");
+  const [mode, setMode] = useState("c_cpp")
+  const [ext, SetExt] = useState("cpp");
   const [output, setOutput] = useState("$ Output");
   const [input, SetInput] = useState("");
+
   const handleSubmit = async () => {
     const payload = {
-      language,
+      ext,
       code,
       input,
     };
@@ -29,12 +30,18 @@ function App() {
     }
   };
 
-  function onChange(newValue) {
+  const onChange = (newValue) => {
     console.log("change", newValue);
     setCode(newValue);
   }
 
+  const setmode = () =>{
+    if(ext==="py")
+      setMode("python");
+  }
+
   return (
+    
     <div className="App">
       <header
         style={{
@@ -55,9 +62,10 @@ function App() {
               border: "node",
             }}
             onChange={(e) => {
-              SetLanguage(e.target.value);
+              SetExt(e.target.value);
+              setmode();
             }}
-            value={language}
+            value={ext}
           >
             <option value="cpp">C++</option>
             <option value="py">Python</option>
@@ -82,7 +90,7 @@ function App() {
       </header>
       <div style={{ display: "flex" }}>
         <AceEditor
-          mode="c_cpp"
+          mode={mode}
           theme="chaos"
           onChange={onChange}
           value={code}
@@ -94,7 +102,7 @@ function App() {
           setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
-            enableSnippets: true
+            enableSnippets: true,
           }}
         />
 
@@ -107,8 +115,10 @@ function App() {
           }}
         ></textarea> */}
 
-        <div style={{ backgroundColor: "#1C2130", width: "50vw", color:"#fff" }}>
-         <p>{`${output}`}</p>
+        <div
+          style={{ backgroundColor: "#1C2130", width: "50vw", color: "#fff", padding:"10px" }}
+        >
+          <p>{`${output}`}</p>
         </div>
       </div>
       <textarea
@@ -117,7 +127,7 @@ function App() {
           width: "100vw",
           height: "25vh",
           fontSize: "15px",
-          color:"#fff"
+          color: "#fff",
         }}
         rows="10"
         cols="35"
