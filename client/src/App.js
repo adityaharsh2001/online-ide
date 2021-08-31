@@ -9,9 +9,9 @@ import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/snippets/c_cpp";
 import "brace/ext/language_tools";
 
-const App = () =>{
+const App = () => {
   const [code, setCode] = useState("");
-  const [mode, setMode] = useState("c_cpp")
+  const [mode, setMode] = useState("c_cpp");
   const [ext, SetExt] = useState("cpp");
   const [output, setOutput] = useState("$ Output");
   const [input, SetInput] = useState("");
@@ -25,23 +25,29 @@ const App = () =>{
     try {
       const { data } = await axios.post("http://localhost:5000/run", payload);
       setOutput(data.output);
-    } catch (err) {
-      console.log(err.response);
+    } catch ( {response} ) {
+      if(response){
+        // console.log(response)
+      const errMsg= response.data.err.stderr;
+      setOutput(errMsg);
+      }
+      else {
+        window.alert("Error Connection To server") 
+      }
     }
   };
 
   const onChange = (newValue) => {
-    console.log("change", newValue);
+    // console.log("change", newValue);
     setCode(newValue);
-  }
+  };
 
-  const setmode = () =>{
-    if(ext==="py")
-      setMode("python");
-  }
+  const setmode = (lang) => {
+    if (lang === "py") setMode("python");
+    if (lang === "cpp") setMode("c_cpp");
+  };
 
   return (
-    
     <div className="App">
       <header
         style={{
@@ -63,7 +69,7 @@ const App = () =>{
             }}
             onChange={(e) => {
               SetExt(e.target.value);
-              setmode();
+              setmode(e.target.value);
             }}
             value={ext}
           >
@@ -116,7 +122,12 @@ const App = () =>{
         ></textarea> */}
 
         <div
-          style={{ backgroundColor: "#1C2130", width: "50vw", color: "#fff", padding:"10px" }}
+          style={{
+            backgroundColor: "#1C2130",
+            width: "50vw",
+            color: "#fff",
+            padding: "10px",
+          }}
         >
           <p>{`${output}`}</p>
         </div>
@@ -139,5 +150,5 @@ const App = () =>{
       ></textarea>
     </div>
   );
-}
+};
 export default App;
