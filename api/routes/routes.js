@@ -14,7 +14,7 @@ router.get("/status", async(req, res) => {
   
   if (jobid == undefined)
   return res.status(400).json({success: false, error: "Job Id Query is undefined"})
-  console.log("ststus", jobid);
+  // console.log("status", jobid);
   try {
     const job = await Job.findById(jobid);
     if (job === undefined){ 
@@ -23,7 +23,7 @@ router.get("/status", async(req, res) => {
     return res.status(200).json({success: true, job});
   }
   catch{
-    console.log(err)
+    // console.log(err)
     return res.status(400).json({success: false, error: JSON.stringify(err)})
   }
 });
@@ -42,7 +42,7 @@ router.post("/run", async (req, res) => {
     job = await new Job({ext, filepath}).save()
     const jobid = job["_id"];
     addJobToQueue(jobid);
-    console.log(job);
+    // console.log(job);
 
     res.status(201).json({success: true, jobid})
 
@@ -70,7 +70,7 @@ router.post("/run", async (req, res) => {
     // job["output"] = JSON.stringify(err)
     
     // await job.save();
-    console.log(job)
+    // console.log(job)
     res.status(500).json({success: false, err: JSON.stringify(err) });
   }
 });

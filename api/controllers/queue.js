@@ -22,14 +22,14 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
       output = await executePy(job.filepath);
     }
     job["completedAt"] = new Date();
-    job["output"] = output;
     job["status"] = "success";
+    job["output"] = output;
     await job.save();
     return true;
   } catch (err) {
     job["completedAt"] = new Date();
-    job["output"] = JSON.stringify(err);
     job["status"] = "error";
+    job["output"] = JSON.stringify(err.stderr);
     await job.save();
     throw Error(JSON.stringify(err));
   }

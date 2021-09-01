@@ -17,9 +17,9 @@ const App = () => {
   const [status, SetStatus] = useState("");
   const [jobid, SetJobid] = useState("");
 
-  useEffect(()=> {
-    setCode(template[ext])
-  },[ext])
+  useEffect(() => {
+    setCode(template[ext]);
+  }, [ext]);
   const handleSubmit = async () => {
     const payload = {
       ext,
@@ -31,7 +31,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post("http://localhost:5000/run", payload);
-      console.log(data);
+      // console.log(data);
       setOutput(data.jobid);
 
       let intervalId;
@@ -43,7 +43,7 @@ const App = () => {
         );
 
         const { success, job, error } = dataRes;
-        console.log(dataRes);
+        // console.log(dataRes);
         if (success) {
           const { status: jobStatus, output: jobOutput } = job;
           SetStatus(jobStatus);
@@ -52,13 +52,13 @@ const App = () => {
           clearInterval();
           clearInterval(intervalId);
         } else {
-          console.error(error);
+          // console.error(error);
           setOutput(error);
         }
       }, 1000);
     } catch ({ response }) {
       if (response) {
-        // console.log(response)
+        console.log(response);
         const errMsg = response.data.err.stderr;
         setOutput(errMsg);
       } else {
@@ -104,9 +104,8 @@ const App = () => {
             onChange={(e) => {
               let response = window.confirm(
                 "Warning Switching The Language will remove your chnages"
-              )
-              if(response)
-              SetExt(e.target.value);
+              );
+              if (response) SetExt(e.target.value);
               setmode(e.target.value);
             }}
             value={ext}
@@ -168,7 +167,11 @@ const App = () => {
             padding: "10px",
           }}
         >
-          <p>{output}</p>
+          <>
+            {output.split("\n").map((item, i) => {
+              return <p key={i}>{item}</p>;
+            })}
+          </>
           <p>{status}</p>
           <p>{jobid && `JobID: ${jobid}`}</p>
         </div>
