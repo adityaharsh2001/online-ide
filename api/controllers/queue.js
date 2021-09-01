@@ -1,55 +1,48 @@
 const Queue = require("bull");
-const Job = require("../modals/Job");
 
+const Job = require("../modals/Job");
 const { executeCpp } = require("./coderunner/executeCpp");
 const { executePy } = require("./coderunner/executePy");
 
-const jobQueue = new Queue("job-queue");
+const jobQueue = new Queue("job-runner-queue");
+const NUM_WORKERS = 5;
 
-const workers = 5;
-jobQueue.process(workers, async ({ data }) => {
-  console.log(data);
-  const { id: jobid } = data;
-  const job = await Job.findById(jobid);
+jobQueue.process(NUM_WORKERS, async ({ data }) => {
+  const jobId = data.id;
+  const job = await Job.findById(jobId);
   if (job === undefined) {
-    throw Error("Job not found");
+    throw Error(`cannot find Job with id ${jobId}`);
   }
-  console.log("Fetched Job", job);
-
   try {
+    let output;
     job["startedAt"] = new Date();
-
-    if (job.ext === "cpp") output = await executeCpp(job.filepath);
-    else if (ext === "py") {
+    if (job.ext === "cpp") {
+      output = await executeCpp(job.filepath);
+    } else if (job.ext === "py") {
       output = await executePy(job.filepath);
     }
-
-    job["CompiledAt"] = new Date();
-    job["status"] = "success";
+    job["completedAt"] = new Date();
     job["output"] = output;
-
+    job["status"] = "success";
     await job.save();
-
-    console.log(job);
-
-    // return res.json({ filepath, output });
+    return true;
   } catch (err) {
-    job["CompletedAt"] = new Date();
-    job["status"] = "error";
-    // console.log(err);
+    job["completedAt"] = new Date();
     job["output"] = JSON.stringify(err);
-
+    job["status"] = "error";
     await job.save();
-    console.log(job);
-    // res.status(500).json({ err });
+    throw Error(JSON.stringify(err));
   }
-  return true;
 });
+
 jobQueue.on("failed", (error) => {
-  console.log(error.data.id, "Failed", error.failedReason);
+  console.error(error.data.id, error.failedReason);
 });
-const addJobToQueue = async (jobid) => {
-  await jobQueue.add({ id: jobid });
+
+const addJobToQueue = async (jobId) => {
+  jobQueue.add({
+    id: jobId,
+  });
 };
 
 module.exports = {

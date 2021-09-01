@@ -5,7 +5,7 @@ const { generateFile } = require("../controllers/coderunner/generateFile");
 const { executeCpp } = require("../controllers/coderunner/executeCpp");
 const { executePy } = require("../controllers/coderunner/executePy");
 
-
+const {addJobToQueue} = require('../controllers/queue')
 const Job = require("../modals/Job");
 const { json } = require("express");
 
@@ -42,36 +42,37 @@ router.post("/run", async (req, res) => {
     const filepath = await generateFile(ext, code, input);
     job = await new Job({ext, filepath}).save()
     const jobid = job["_id"];
+    addJobToQueue(jobid);
     console.log(job);
 
     res.status(201).json({success: true, jobid})
 
-    job["startedAt"] = new Date();
+    // job["startedAt"] = new Date();
 
-    if (ext === "cpp") output = await executeCpp(filepath);
-    else if (ext === "py") {
-      output = await executePy(filepath);
-    }
+    // if (ext === "cpp") output = await executeCpp(filepath);
+    // else if (ext === "py") {
+    //   output = await executePy(filepath);
+    // }
 
-    job["CompiledAt"] = new Date();
-    job["status"] = "success";
-    job["output"] = output;
+    // job["CompiledAt"] = new Date();
+    // job["status"] = "success";
+    // job["output"] = output;
     
-    await job.save();
+    // await job.save();
   
-    console.log(job)
+    // console.log(job)
     
     // return res.json({ filepath, output });
   } catch (err) {
     
-    job["CompletedAt"] = new Date();
-    job["status"] = "error";
-    // console.log(err);
-    job["output"] = JSON.stringify(err)
+    // job["CompletedAt"] = new Date();
+    // job["status"] = "error";
+    // // console.log(err);
+    // job["output"] = JSON.stringify(err)
     
-    await job.save();
+    // await job.save();
     console.log(job)
-    // res.status(500).json({ err });
+    res.status(500).json({success: false, err: JSON.stringify(err) });
   }
 });
 
