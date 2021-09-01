@@ -24,7 +24,6 @@ router.get("/status", async(req, res) => {
   }
   catch{
     console.log(err)
-
     return res.status(400).json({success: false, error: JSON.stringify(err)})
   }
 });
