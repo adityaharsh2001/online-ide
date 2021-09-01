@@ -25,9 +25,6 @@ const executeCpp = (filepath) => {
     )
   });
 
-  execute.then( () => {
-    exec (`rm -rf ${filepath[0]} ${outputPath}/${jobId}.out ${inputPath}/${filepath[1]}`)
-  })
   return execute
 };
 
