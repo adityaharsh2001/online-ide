@@ -31,9 +31,9 @@ const App = () => {
       input,
     };
     try {
-      SetJobid("")
-      SetStatus("")
-      setOutput("")
+      SetJobid("");
+      SetStatus("");
+      setOutput("");
       const { data } = await axios.post("http://localhost:5000/run", payload);
       console.log(data);
       setOutput(data.jobid);
@@ -98,7 +98,17 @@ const App = () => {
           """ This is executed when run from the command line """
           main()`);
     }
-    if (lang === "cpp") setMode("c_cpp");
+    if (lang === "cpp") {
+      setMode("c_cpp");
+      setCode(`#include<iostream>
+    using namespace std;
+    
+    int main()
+    {
+      // Code here
+      return 0;
+    }`);
+    }
   };
 
   return (

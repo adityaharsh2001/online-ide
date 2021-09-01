@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { generateFile } = require("../controllers/generateFile");
-const { executeCpp } = require("../controllers/executeCpp");
-const { executePy } = require("../controllers/executePy");
+const { generateFile } = require("../controllers/coderunner/generateFile");
+const { executeCpp } = require("../controllers/coderunner/executeCpp");
+const { executePy } = require("../controllers/coderunner/executePy");
 
 
 const Job = require("../modals/Job");
