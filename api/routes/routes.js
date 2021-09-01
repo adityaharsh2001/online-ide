@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { generateFile } = require("../controllers/coderunner/generateFile");
-const { executeCpp } = require("../controllers/coderunner/executeCpp");
-const { executePy } = require("../controllers/coderunner/executePy");
+
 
 const {addJobToQueue} = require('../controllers/queue')
 const Job = require("../modals/Job");
@@ -31,6 +30,7 @@ router.get("/status", async(req, res) => {
 });
 
 router.post("/run", async (req, res) => {
+  
   const { ext, code, input } = req.body;
   
   if (code === undefined) {

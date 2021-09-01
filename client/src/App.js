@@ -1,29 +1,25 @@
 import axios from "axios";
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/snippets/c_cpp";
-import "brace/ext/language_tools";
-
+import template from "./templates";
 const App = () => {
-  const [code, setCode] = useState(`#include<iostream>
-  using namespace std;
-  
-  int main()
-  {
-    // Code here
-    return 0;
-  }`);
+  const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
   const [ext, SetExt] = useState("cpp");
   const [output, setOutput] = useState("$ Output");
   const [input, SetInput] = useState("");
   const [status, SetStatus] = useState("");
   const [jobid, SetJobid] = useState("");
+
+  useEffect(()=> {
+    setCode(template[ext])
+  },[ext])
   const handleSubmit = async () => {
     const payload = {
       ext,
@@ -79,35 +75,9 @@ const App = () => {
   const setmode = (lang) => {
     if (lang === "py") {
       setMode("python");
-      setCode(`#!/usr/bin/env python3
-      """
-      Module Docstring
-      """
-      
-      __author__ = "Your Name"
-      __version__ = "0.1.0"
-      __license__ = "MIT"
-      
-      
-      def main():
-          """ Main entry point of the app """
-          print("hello world")
-      
-      
-      if __name__ == "__main__":
-          """ This is executed when run from the command line """
-          main()`);
     }
     if (lang === "cpp") {
       setMode("c_cpp");
-      setCode(`#include<iostream>
-    using namespace std;
-    
-    int main()
-    {
-      // Code here
-      return 0;
-    }`);
     }
   };
 
@@ -132,6 +102,10 @@ const App = () => {
               border: "node",
             }}
             onChange={(e) => {
+              let response = window.confirm(
+                "Warning Switching The Language will remove your chnages"
+              )
+              if(response)
               SetExt(e.target.value);
               setmode(e.target.value);
             }}
