@@ -22,7 +22,7 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
       output = await executePy(job.filepath);
     }
     job["completedAt"] = new Date();
-    job["status"] = "success";
+    job["status"] = "Executed Successfully";
     job["output"] = output;
     await job.save();
     return true;

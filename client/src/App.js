@@ -7,7 +7,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/snippets/c_cpp";
-import template from "./templates";
+import template from "./utils/templates";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
@@ -140,7 +140,7 @@ const App = () => {
           value={code}
           name="UNIQUE_ID_OF_DIV"
           editorProps={{ $blockScrolling: true }}
-          style={{ width: "50vw", height: "70vh", fontSize: "15px" }}
+          style={{ width: "100%", height: "100vh", fontSize: "15px" }}
           showPrintMargin={false}
           highlightActiveLine={false}
           setOptions={{
@@ -159,39 +159,43 @@ const App = () => {
           }}
         ></textarea> */}
 
-        <div
-          style={{
-            backgroundColor: "#1C2130",
-            width: "50vw",
-            color: "#fff",
-            padding: "10px",
-          }}
-        >
-          <>
-            {output.split("\n").map((item, i) => {
-              return <p key={i}>{item}</p>;
-            })}
-          </>
-          <p>{status}</p>
-          <p>{jobid && `JobID: ${jobid}`}</p>
+        <div>
+          <AceEditor
+            theme="chaos"
+            value={output}
+            readOnly= {true}
+            setOptions={{
+              highlightActiveLine: false,
+              showLineNumbers: false,
+              showPrintMargin: false,
+            }}
+          >
+            <p>{output}</p>
+            <p>{status}</p>
+            <p>{jobid && `JobID: ${jobid}`}</p>
+          </AceEditor>
+          <AceEditor
+            // style={{
+            //   backgroundColor: "#1C2130",
+            //   width: "100vw",
+            //   height: "25vh",
+            //   fontSize: "15px",
+            //   color: "#fff",
+            // }}
+            placeholder="STDIN"
+            theme="chaos"
+            value={input}
+            setOptions={{
+              highlightActiveLine: false,
+              showLineNumbers: false,
+              showPrintMargin: false,
+            }}
+            onChange={(e) => {
+              SetInput(e);
+            }}
+          ></AceEditor>
         </div>
       </div>
-      <textarea
-        style={{
-          backgroundColor: "#1C2130",
-          width: "100vw",
-          height: "25vh",
-          fontSize: "15px",
-          color: "#fff",
-        }}
-        rows="10"
-        cols="35"
-        placeholder="Write custom Insput Here"
-        value={input}
-        onChange={(e) => {
-          SetInput(e.target.value);
-        }}
-      ></textarea>
     </div>
   );
 };
