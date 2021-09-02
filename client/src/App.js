@@ -6,6 +6,7 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
+import "ace-builds/src-noconflict/theme-monokai"
 import "ace-builds/src-noconflict/snippets/c_cpp";
 import template from "./utils/templates";
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
   const [output, setOutput] = useState("$ Output");
   const [input, SetInput] = useState("");
   const [status, SetStatus] = useState("");
-  const [jobid, SetJobid] = useState("");
+  // const [jobid, SetJobid] = useState("");
 
   useEffect(() => {
     setCode(template[ext]);
@@ -27,12 +28,13 @@ const App = () => {
       input,
     };
     try {
-      SetJobid("");
+      // SetJobid("");
       SetStatus("");
       setOutput("");
       const { data } = await axios.post("http://localhost:5000/run", payload);
       // console.log(data);
-      setOutput(data.jobid);
+      if(data.job)
+      setOutput(data.jobOutput);
 
       let intervalId;
 
@@ -135,11 +137,10 @@ const App = () => {
       <div style={{ display: "flex" }}>
         <AceEditor
           mode={mode}
-          theme="chaos"
+          theme="monokai"
           onChange={onChange}
           value={code}
           name="UNIQUE_ID_OF_DIV"
-          editorProps={{ $blockScrolling: true }}
           style={{ width: "100%", height: "100vh", fontSize: "15px" }}
           showPrintMargin={false}
           highlightActiveLine={false}
@@ -161,31 +162,24 @@ const App = () => {
 
         <div>
           <AceEditor
-            theme="chaos"
-            value={output}
+            theme="monokai"
+            value={output+"\n" + status  }
             readOnly= {true}
+            style={{ height: "50vh" }}
             setOptions={{
+              showGutter:false,
               highlightActiveLine: false,
               showLineNumbers: false,
               showPrintMargin: false,
             }}
-          >
-            <p>{output}</p>
-            <p>{status}</p>
-            <p>{jobid && `JobID: ${jobid}`}</p>
-          </AceEditor>
+          />
           <AceEditor
-            // style={{
-            //   backgroundColor: "#1C2130",
-            //   width: "100vw",
-            //   height: "25vh",
-            //   fontSize: "15px",
-            //   color: "#fff",
-            // }}
+            theme="monokai"
             placeholder="STDIN"
-            theme="chaos"
             value={input}
+            style={{ height: "50vh" }}
             setOptions={{
+              showGutter: false,
               highlightActiveLine: false,
               showLineNumbers: false,
               showPrintMargin: false,
@@ -193,7 +187,7 @@ const App = () => {
             onChange={(e) => {
               SetInput(e);
             }}
-          ></AceEditor>
+          />
         </div>
       </div>
     </div>
