@@ -13,7 +13,6 @@ const executeCpp = (filepath) => {
   const jobId = path.basename(filepath[0]).split(".")[0];
   const outPath = path.join(outputPath, `${jobId}.out`);
 
-  // exec (`rm -rf ${dirCodes}/${filepath[0]} ${inputPath}/${jobId}.out ${inputPath}/${filepath[1]}`);
   const execute = new Promise((resolve, reject) => {
     exec(
       `g++ ${filepath[0]} -o ${outPath} && cd ${outputPath} && ./${jobId}.out < ${inputPath}/${filepath[1]}`,

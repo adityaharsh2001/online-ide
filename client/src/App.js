@@ -9,6 +9,8 @@ import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/snippets/c_cpp";
 import template from "./utils/templates";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/fontawesome-free-solid";
 import uuid from "uuid";
 const App = () => {
   const [code, setCode] = useState("");
@@ -18,6 +20,7 @@ const App = () => {
   const [input, SetInput] = useState("");
   const [status, SetStatus] = useState("");
   const [jobId, SetJobId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     SetJobId(uuid());
@@ -40,6 +43,7 @@ const App = () => {
       );
       // console.log(data);
       if (data.job) setOutput(data.jobOutput);
+      setLoading(true);
 
       let intervalId;
 
@@ -54,8 +58,9 @@ const App = () => {
         if (success) {
           const { status: jobStatus, output: jobOutput } = job;
           SetStatus(jobStatus);
-          if (jobStatus === "pending") return;
+          if (jobStatus === "running") return;
           setOutput(jobOutput);
+          setLoading(false);
           clearInterval();
           clearInterval(intervalId);
         } else {
@@ -134,8 +139,7 @@ const App = () => {
               cursor: "pointer",
             }}
             onClick={handleSubmit}
-          >
-            Submit
+          > {loading? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch}/>: "Submit"}
           </button>
         </div>
       </header>
@@ -171,6 +175,7 @@ const App = () => {
             value={output + "\n" + status}
             readOnly={true}
             style={{ height: "50vh" }}
+            wrapEnabled= {true}
             setOptions={{
               showGutter: false,
               highlightActiveLine: false,

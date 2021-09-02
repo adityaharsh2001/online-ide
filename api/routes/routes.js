@@ -42,10 +42,7 @@ router.post("/run", async (req, res) => {
     job = await new Job({ext, filepath}).save()
     const jobid = job["_id"];
     addJobToQueue(jobid);
-    
     // console.log(job);
-    
-
     res.status(201).json({success: true, jobid})
 
     // job["startedAt"] = new Date();

@@ -28,13 +28,15 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
     return true;
   } catch (err) {
     job["completedAt"] = new Date();
-    job["status"] = "error";
-    job["output"] = JSON.stringify(err.stderr);
+    job["status"] = "Error Executing the File";
+    job["output"] = err.stderr;
     await job.save();
     throw Error(JSON.stringify(err));
   }
 });
-
+jobQueue.on("completed", () => {
+  console.log("completed")
+})
 jobQueue.on("failed", (error) => {
   console.error(error.data.id, error.failedReason);
 });

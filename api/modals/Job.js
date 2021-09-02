@@ -25,8 +25,8 @@ const JobSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        default: "pending",
-        enum: ["pending", "Executed Successfully", "error"]
+        default: "running",
+        enum: ["running", "Executed Successfully", "Error Executing the File"]
     }
 
 });
