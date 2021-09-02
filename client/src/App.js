@@ -6,9 +6,10 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
-import "ace-builds/src-noconflict/theme-monokai"
+import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/snippets/c_cpp";
 import template from "./utils/templates";
+import uuid from "uuid";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
@@ -16,31 +17,35 @@ const App = () => {
   const [output, setOutput] = useState("$ Output");
   const [input, SetInput] = useState("");
   const [status, SetStatus] = useState("");
-  // const [jobid, SetJobid] = useState("");
+  const [jobId, SetJobId] = useState("");
 
   useEffect(() => {
+    SetJobId(uuid());
     setCode(template[ext]);
   }, [ext]);
   const handleSubmit = async () => {
     const payload = {
+      jobId,
       ext,
       code,
       input,
     };
     try {
-      // SetJobid("");
+      // SetJobId("");
       SetStatus("");
       setOutput("");
-      const { data } = await axios.post("http://localhost:5000/run", payload);
+      const { data } = await axios.post(
+        "http://192.168.29.68:5000/run",
+        payload
+      );
       // console.log(data);
-      if(data.job)
-      setOutput(data.jobOutput);
+      if (data.job) setOutput(data.jobOutput);
 
       let intervalId;
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://localhost:5000/status",
+          "http://192.168.29.68:5000/status",
           { params: { id: data.jobid } }
         );
 
@@ -163,11 +168,11 @@ const App = () => {
         <div>
           <AceEditor
             theme="monokai"
-            value={output+"\n" + status  }
-            readOnly= {true}
+            value={output + "\n" + status}
+            readOnly={true}
             style={{ height: "50vh" }}
             setOptions={{
-              showGutter:false,
+              showGutter: false,
               highlightActiveLine: false,
               showLineNumbers: false,
               showPrintMargin: false,

@@ -12,8 +12,7 @@ if (!fs.existsSync(inputPath)) {
   fs.mkdirSync(inputPath, { recursive: true });
 }
 
-const generateFile = async (format, content, input) => {
-  const jobId = uuid();
+const generateFile = async (jobId, format, content, input) => {
   const filename = `${jobId}.${format}`;
   const inputFileName = `${jobId}.txt`;
   const inputFilePath = path.join(inputPath, inputFileName);

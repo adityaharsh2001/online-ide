@@ -30,7 +30,7 @@ router.get("/status", async(req, res) => {
 
 router.post("/run", async (req, res) => {
   
-  const { ext, code, input } = req.body;
+  const { jobId, ext, code, input } = req.body;
   
   if (code === undefined) {
     return res.status(400).json({ success: false, error: "Empty code body!" });
@@ -38,11 +38,13 @@ router.post("/run", async (req, res) => {
   let job;  
   try {
     // console.log(ext);
-    const filepath = await generateFile(ext, code, input);
+    const filepath = await generateFile(jobId, ext, code, input);
     job = await new Job({ext, filepath}).save()
     const jobid = job["_id"];
     addJobToQueue(jobid);
+    
     // console.log(job);
+    
 
     res.status(201).json({success: true, jobid})
 
