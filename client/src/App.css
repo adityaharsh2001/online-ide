@@ -1,6 +1,26 @@
 body {
-    margin: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
+  min-height: 1000%;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+header {
+  left: 0;
+  top: 0;
+}
+.App {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666b7a;
+  border-radius: 20px;
+  border: 1px solid rgb(0, 0, 0);
 }

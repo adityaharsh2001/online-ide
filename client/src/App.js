@@ -8,9 +8,10 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/snippets/c_cpp";
-import template from "./utils/templates";
+import template from "./lib/templates";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/fontawesome-free-solid";
+import "ace-builds/src-noconflict/theme-dracula"
 import uuid from "uuid";
 const App = () => {
   const [code, setCode] = useState("");
@@ -94,110 +95,124 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <header
-        style={{
-          height: "50px",
-          backgroundColor: "#2D2F34",
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100vw",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <select
-            style={{
-              width: "100px",
-              marginLeft: "20px",
-              height: "30px",
-              border: "node",
-            }}
-            onChange={(e) => {
-              let response = window.confirm(
-                "Warning Switching The Language will remove your chnages"
-              );
-              if (response) SetExt(e.target.value);
-              setmode(e.target.value);
-            }}
-            value={ext}
-          >
-            <option value="cpp">C++</option>
-            <option value="py">Python</option>
-          </select>
-        </div>
-        <div>
-          <button
-            style={{
-              backgroundColor: "#0356F3",
-              width: "100px",
-              border: "#0356F3",
-              height: "30px",
-              borderRadius: "20px",
-              marginRight: "20px",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-            onClick={handleSubmit}
-          > {loading? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch}/>: "Submit"}
-          </button>
-        </div>
-      </header>
-      <div style={{ display: "flex" }}>
-        <AceEditor
-          mode={mode}
-          theme="monokai"
-          onChange={onChange}
-          value={code}
-          name="UNIQUE_ID_OF_DIV"
-          style={{ width: "100%", height: "100vh", fontSize: "15px" }}
-          showPrintMargin={false}
-          highlightActiveLine={false}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
+    <div>
+      <div className="App">
+        <header
+          style={{
+            height: "7vh",
+            backgroundColor: "#2D2F34",
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            alignItems: "center",
+            position: "static",
           }}
-        />
+        >
+          <div>
+            <select
+              style={{
+                width: "100px",
+                marginLeft: "20px",
+                height: "30px",
+                border: "node",
+              }}
+              onChange={(e) => {
+                let response = window.confirm(
+                  "Warning Switching The Language will remove your chnages"
+                );
+                if (response) SetExt(e.target.value);
+                setmode(e.target.value);
+              }}
+              value={ext}
+            >
+              <option value="cpp">C++</option>
+              <option value="py">Python</option>
+            </select>
+          </div>
+          <div>
+            <button
+              style={{
+                backgroundColor: "#0356F3",
+                width: "100px",
+                border: "#0356F3",
+                padding: "10px",
+                borderRadius: "20px",
+                marginRight: "20px",
+                color: "#fff",
+                cursor: "pointer",
+              }}  
+              onClick={handleSubmit}  
+            >
+              {" "}
+              {loading ? (
+                <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} />
+              ) : (
+                "Submit"
+              )}
+            </button>
+          </div>
+        </header> 
+        <div style={{ display: "flex", height: "93vh" }}>
+          <AceEditor
+            className="editor"
+            mode={mode}
+            theme="dracula"
+            height="100%"
+            onChange={onChange}
+            value={code}
+            cols
+            style={{ width: "100%" }}
+            editorProps={{ $blockScrolling: true }}
+            showPrintMargin={false}
+            highlightActiveLine={true}
+            setOptions={{
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
+              enableSnippets: true,
+            }}
+          />
 
-        {/* <textarea
+          {/* <textarea
           rows="20"
           cols="75"
           value={code}
           onChange={(e) => {
             setCode(e.target.value);
+    
           }}
-        ></textarea> */}
+        > */}
+          {/* </textarea> */}
 
-        <div>
-          <AceEditor
-            theme="monokai"
-            value={output + "\n" + status}
-            readOnly={true}
-            style={{ height: "50vh" }}
-            wrapEnabled= {true}
-            setOptions={{
-              showGutter: false,
-              highlightActiveLine: false,
-              showLineNumbers: false,
-              showPrintMargin: false,
-            }}
-          />
-          <AceEditor
-            theme="monokai"
-            placeholder="STDIN"
-            value={input}
-            style={{ height: "50vh" }}
-            setOptions={{
-              showGutter: false,
-              highlightActiveLine: false,
-              showLineNumbers: false,
-              showPrintMargin: false,
-            }}
-            onChange={(e) => {
-              SetInput(e);
-            }}
-          />
+          <div>
+            <AceEditor
+              theme="dracula"
+              value={output + "\n" + status}
+              readOnly={true}
+              style={{ height: "50%" }}
+              wrapEnabled={false}
+              setOptions={{
+                showGutter: false,
+                highlightActiveLine: false,
+                showLineNumbers: false,
+                showPrintMargin: false,
+              }}
+            />
+            <AceEditor
+              theme="dracula"
+              placeholder="STDIN"
+              value={input}
+              style={{ height: "50%" }}
+              setOptions={{
+                showGutter: false,
+                highlightActiveLine: false,
+                showLineNumbers: false,
+                showPrintMargin: false,
+              }}
+              onChange={(e) => {
+                SetInput(e);
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
