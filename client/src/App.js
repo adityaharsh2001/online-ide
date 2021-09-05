@@ -8,10 +8,12 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/snippets/c_cpp";
+import "ace-builds/src-noconflict/snippets/python";
+import "ace-builds/src-noconflict/ext-emmet"
+import "brace/ext/language_tools";
 import template from "./lib/templates";
 import "ace-builds/src-noconflict/theme-dracula";
 import uuid from "uuid";
-import { set } from "mongoose";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
@@ -36,6 +38,7 @@ const App = () => {
     setCode(template[ext]);
   }, [ext]);
   const handleSubmit = async () => {
+    isFetching(true)
     const payload = {
       jobId,
       ext,
@@ -44,6 +47,7 @@ const App = () => {
     };
     try {
       // SetJobId("");
+      
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
@@ -52,7 +56,6 @@ const App = () => {
       );
       // console.log(data);
       if (data.job) setOutput(data.jobOutput);
-      isFetching(true);
 
       let intervalId;
 
@@ -93,11 +96,11 @@ const App = () => {
     setCode(newValue);
   };
 
-  const setmode = (lang) => {
-    if (lang === "py") {
+  const setmode = (ext) => {
+    if (ext === "py") {
       setMode("python");
     }
-    if (lang === "cpp") {
+    if (ext === "cpp") {
       setMode("c_cpp");
     }
   };
@@ -108,7 +111,7 @@ const App = () => {
         <header
           style={{
             height: "50px",
-            backgroundColor: "#000",
+            backgroundColor: "#1D1E22",
             display: "flex",
             justifyContent: "space-between",
             width: "100%",
@@ -122,8 +125,8 @@ const App = () => {
                 let response = window.confirm(
                   "Warning Switching The Language will remove your chnages"
                 );
-                if (response) SetExt(e.target.value);
-                setmode(e.target.value);
+                if (response){ SetExt(e.target.value);
+                setmode(e.target.value);}
               }}
               value={ext}
             >
@@ -132,8 +135,8 @@ const App = () => {
             </select>
           </div>
           <div>
-            <button onClick={handleSubmit}>
-              {" "}
+            <button onClick={handleSubmit} disabled = {fetching}>
+              
               {fetching ? (
                 <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} />
               ) : (
@@ -142,7 +145,17 @@ const App = () => {
             </button>
           </div>
         </header>
-        <div
+       </div>
+
+      {loading? (<div className="logo">
+        <span className="left">&#123;</span>
+        <span class="right">&#125;</span>
+        <span class="text">
+          IDE
+          <br />
+          <strong>GEEK</strong>
+        </span>
+      </div>): ( <div
           style={{
             display: "flex",
             position: "absolute",
@@ -164,6 +177,9 @@ const App = () => {
             editorProps={{ $blockScrolling: true }}
             showPrintMargin={false}
             highlightActiveLine={true}
+            enableBasicAutocompletion = {true}
+            enableLiveAutocompletion={true}
+            enableSnippets={true}
             setOptions={{
               enableBasicAutocompletion: true,
               enableLiveAutocompletion: true,
@@ -213,17 +229,7 @@ const App = () => {
             />
           </div>
         </div>
-      </div>
-
-      <div className="logo">
-        <span className="left">&#123;</span>
-        <span class="right">&#125;</span>
-        <span class="text">
-          IDE
-          <br />
-          <strong>GEEK</strong>
-        </span>
-      </div>
+      )}
     </div>
   );
 };

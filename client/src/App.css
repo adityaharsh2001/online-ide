@@ -1,9 +1,8 @@
 :root {
-  --background-gradient: linear-gradient(30deg, #f39c12 30%, #f1c40f);
+  --background-gradient: #1D1E22;
   --gray: #34495e;
   --darkgray: #2c3e50;
 }
-
 body {
   width: 100vw;
   margin: 0;
@@ -51,8 +50,6 @@ button {
 button:hover {
   background-color: #32a155;
 }
-
-
 
 select {
   /* Reset Select */
@@ -144,6 +141,7 @@ a {
   font-family: Arial;
   cursor: pointer;
   color: #fff;
+  transition: all 2s;
 }
 
 .logo .text {
