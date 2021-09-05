@@ -1,18 +1,17 @@
 import axios from "axios";
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/fontawesome-free-solid";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/theme-chaos";
-import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/snippets/c_cpp";
 import template from "./lib/templates";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch } from "@fortawesome/fontawesome-free-solid";
-import "ace-builds/src-noconflict/theme-dracula"
+import "ace-builds/src-noconflict/theme-dracula";
 import uuid from "uuid";
+import { set } from "mongoose";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
@@ -21,7 +20,16 @@ const App = () => {
   const [input, SetInput] = useState("");
   const [status, SetStatus] = useState("");
   const [jobId, SetJobId] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [fetching, isFetching] = useState(false);
+  const [loading, isLoading] = useState(true);
+
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      isLoading(false)
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     SetJobId(uuid());
@@ -44,7 +52,7 @@ const App = () => {
       );
       // console.log(data);
       if (data.job) setOutput(data.jobOutput);
-      setLoading(true);
+      isFetching(true);
 
       let intervalId;
 
@@ -61,7 +69,7 @@ const App = () => {
           SetStatus(jobStatus);
           if (jobStatus === "running") return;
           setOutput(jobOutput);
-          setLoading(false);
+          isFetching(false);
           clearInterval();
           clearInterval(intervalId);
         } else {
@@ -99,8 +107,8 @@ const App = () => {
       <div className="App">
         <header
           style={{
-            height: "7vh",
-            backgroundColor: "#2D2F34",
+            height: "50px",
+            backgroundColor: "#000",
             display: "flex",
             justifyContent: "space-between",
             width: "100%",
@@ -108,14 +116,8 @@ const App = () => {
             position: "static",
           }}
         >
-          <div>
+          <div className="select">
             <select
-              style={{
-                width: "100px",
-                marginLeft: "20px",
-                height: "30px",
-                border: "node",
-              }}
               onChange={(e) => {
                 let response = window.confirm(
                   "Warning Switching The Language will remove your chnages"
@@ -130,29 +132,26 @@ const App = () => {
             </select>
           </div>
           <div>
-            <button
-              style={{
-                backgroundColor: "#0356F3",
-                width: "100px",
-                border: "#0356F3",
-                padding: "10px",
-                borderRadius: "20px",
-                marginRight: "20px",
-                color: "#fff",
-                cursor: "pointer",
-              }}  
-              onClick={handleSubmit}  
-            >
+            <button onClick={handleSubmit}>
               {" "}
-              {loading ? (
+              {fetching ? (
                 <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} />
               ) : (
                 "Submit"
               )}
             </button>
           </div>
-        </header> 
-        <div style={{ display: "flex", height: "93vh" }}>
+        </header>
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            top: "50px",
+            bottom: "0",
+            right: "0",
+            left: "0",
+          }}
+        >
           <AceEditor
             className="editor"
             mode={mode}
@@ -214,6 +213,16 @@ const App = () => {
             />
           </div>
         </div>
+      </div>
+
+      <div className="logo">
+        <span className="left">&#123;</span>
+        <span class="right">&#125;</span>
+        <span class="text">
+          IDE
+          <br />
+          <strong>GEEK</strong>
+        </span>
       </div>
     </div>
   );

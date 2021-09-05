@@ -1,8 +1,16 @@
+:root {
+  --background-gradient: linear-gradient(30deg, #f39c12 30%, #f1c40f);
+  --gray: #34495e;
+  --darkgray: #2c3e50;
+}
+
 body {
-  min-height: 1000%;
   width: 100vw;
   margin: 0;
   padding: 0;
+  background: var(--background-gradient);
+  color: #fff;
+  text-align: center;
 }
 header {
   left: 0;
@@ -13,7 +21,12 @@ header {
   padding: 0;
   height: 100%;
 }
-
+.ace_content {
+  padding: 5px 2px;
+}
+.ace_folding-enabled > .ace_gutter-cell {
+  padding: 5px 12px;
+}
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -23,4 +36,141 @@ header {
   background: #666b7a;
   border-radius: 20px;
   border: 1px solid rgb(0, 0, 0);
+}
+button {
+  background-color: #47cf73;
+  width: 100px;
+  border: #0356f3;
+  height: 35px;
+  border-radius: 10px;
+  margin-right: 20px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #32a155;
+}
+
+
+
+select {
+  /* Reset Select */
+  appearance: none;
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+  /* Personalize */
+  flex: 1;
+  padding: 0 1em;
+  color: #fff;
+  background-color: var(--darkgray);
+  background-image: none;
+  cursor: pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+.select {
+  position: relative;
+  display: flex;
+  width: 150px;
+  height: 35px;
+  border-radius: 0.25em;
+  overflow: hidden;
+  margin-left: 20px;
+}
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #34495e;
+  transition: 0.25s all ease;
+  pointer-events: none;
+}
+/* Transition */
+.select:hover::after {
+  color: #f39c12;
+}
+
+h1 {
+  margin: 0 0 0.25em;
+}
+a {
+  font-weight: bold;
+  color: var(--gray);
+  text-decoration: none;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  background: white;
+}
+
+@keyframes animation-text {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes animation-left {
+  from {
+    left: 30px;
+  }
+  to {
+    left: -30px;
+  }
+}
+@keyframes animation-right {
+  from {
+    right: 30px;
+  }
+  to {
+    right: -30px;
+  }
+}
+
+.logo {
+  display: inline-block;
+  position: absolute;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: Arial;
+  cursor: pointer;
+  color: #fff;
+}
+
+.logo .text {
+  overflow: hidden;
+  font-size: 40px;
+  line-height: 40px;
+  text-align: center;
+  display: inline-block;
+  animation-name: animation-text;
+  animation-duration: 2s;
+}
+
+.left {
+  position: absolute;
+  left: -30px;
+  font-size: 70px;
+  line-height: 70px;
+  animation-name: animation-left;
+  animation-duration: 1.5s;
+  font-weight: bold;
+}
+.right {
+  position: absolute;
+  right: -30px;
+  font-size: 70px;
+  line-height: 70px;
+  animation-name: animation-right;
+  animation-duration: 1.5s;
+  font-weight: bold;
 }
