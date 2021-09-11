@@ -51,7 +51,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
-        "http://192.168.29.68:5000/run",
+        "http://localhost:5000/run",
         payload
       );
       // console.log(data);
@@ -61,7 +61,7 @@ const App = () => {
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://192.168.29.68:5000/status",
+          "http://localhost:5000/status",
           { params: { id: data.jobid } }
         );
 
@@ -172,13 +172,13 @@ const App = () => {
             height="100%"
             onChange={onChange}
             value={code}
-            cols
+            minLines="50"
             style={{ width: "100%" }}
             editorProps={{ $blockScrolling: true }}
             showPrintMargin={false}
             highlightActiveLine={true}
             enableBasicAutocompletion = {true}
-            enableLiveAutocompletion={true}
+            enableLiveAutocompletion={true} 
             enableSnippets={true}
             setOptions={{
               enableBasicAutocompletion: true,
@@ -198,7 +198,9 @@ const App = () => {
         > */}
           {/* </textarea> */}
 
-          <div>
+          <div style={{
+            maxWidth:"50vw"
+          }}>
             <AceEditor
               theme="dracula"
               value={output + "\n" + status}
