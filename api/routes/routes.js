@@ -6,7 +6,6 @@ const { generateFile } = require("../controllers/coderunner/generateFile");
 
 const {addJobToQueue} = require('../controllers/queue')
 const Job = require("../modals/Job");
-const { json } = require("express");
 
 
 router.get("/status", async(req, res) => {
@@ -37,7 +36,7 @@ router.post("/run", async (req, res) => {
   }
   let job;  
   try {
-    // console.log(ext);
+    console.log(ext);
     const filepath = await generateFile(jobId, ext, code, input);
     job = await new Job({ext, filepath}).save()
     const jobid = job["_id"];

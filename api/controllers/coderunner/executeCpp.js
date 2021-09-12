@@ -1,23 +1,37 @@
-const { exec } = require("child_process");
-const fs = require("fs");
+const { spawn } = require("child_process");
 const path = require("path");
 
-
 const executeCpp = (filepath) => {
-  const jobId = path.basename(filepath[0]).split(".")[0];
+  const file = path.basename(filepath[1].split(".")[0]);
 
   const execute = new Promise((resolve, reject) => {
-    exec(
-      `g++ ${filepath[0]} -o ${jobId}.out && ./${jobId}.out < ${filepath[0]}`,
-      (error, stdout, stderr) => {
-        error && reject({ error, stderr });
-        stderr && reject(stderr);
-        resolve(stdout);
-      }
-    )
+    try {
+      const run = spawn(
+        `cd ${filepath[0]} && g++ ${file}.cpp -o ${file}.out && ./${file}.out < ${file}.txt`,
+        {
+          shell: true,
+        }
+        // (error, stdout, stderr) => {
+        //   error && reject({ error, stderr });
+        //   stderr && reject(stderr);
+        //   resolve(stdout);
+        // }
+      );
+      run.stdout.on("data", (data) => {
+        resolve(data);
+      });
+      run.stderr.on("data", (data) => {
+        resolve(data);
+      });
+      run.on("error", (err) => {
+        throw new Error(err.message);
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
 
-  return execute
+  return execute;
 };
 
 module.exports = {

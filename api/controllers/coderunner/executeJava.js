@@ -1,29 +1,33 @@
-const { exec } = require("child_process");
-const fs = require("fs");
+const { spawn } = require("child_process");
 const path = require("path");
 
-const outputPath = path.join(__dirname, "outputs");
+const executeJAVA = async (filepath) => {
+  const file = path.basename(filepath[1].split(".")[0]);
 
-if (!fs.existsSync(outputPath)) {
-  fs.mkdirSync(outputPath, { recursive: true });
-}
-
-const executeJava = (filepath) => {
-  const jobId = path.basename(filepath).split(".")[0];
-  const outPath = path.join(outputPath, `${jobId}.out`);
-
-  return new Promise((resolve, reject) => {
-    exec(
-      `javac ${filepath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out`,
-      (error, stdout, stderr) => {
-        error && reject({ error, stderr });
-        stderr && reject(stderr);
-        resolve(stdout);
+  const execute = await new Promise((resolve, reject) => {
+    const run = spawn(
+      `cd ${filepath[0]} && javac ${file}.java && java ${file}`,
+      {
+        shell: true,
       }
+      // (error, stdout, stderr) => {
+      //   error && reject({ error, stderr });
+      //   stderr && reject(stderr);
+      //   resolve(stdout);
+      // }
     );
+    run.stderr.on("data", (data) => {
+      resolve(String(data));
+    });
+    run.stdout.on("data", (data) => {
+      resolve(data);
+      console.log(data);
+    });
   });
+
+  return execute;
 };
 
 module.exports = {
-  executeCpp: executeJava,
+  executeJAVA,
 };

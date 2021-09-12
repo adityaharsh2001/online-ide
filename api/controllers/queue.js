@@ -3,6 +3,7 @@ const Queue = require("bull");
 const Job = require("../modals/Job");
 const { executeCpp } = require("./coderunner/executeCpp");
 const { executePy } = require("./coderunner/executePy");
+const { executeJAVA} = require("./coderunner/executeJava");
 
 const jobQueue = new Queue("job-runner-queue");
 const NUM_WORKERS = 5;
@@ -20,6 +21,9 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
       output = await executeCpp(job.filepath);
     } else if (job.ext === "py") {
       output = await executePy(job.filepath);
+    }
+    else if (job.ext === "java"){
+      output = await executeJAVA(job.filepath);
     }
     job["completedAt"] = new Date();
     job["status"] = "Executed Successfully";

@@ -103,6 +103,9 @@ const App = () => {
     if (ext === "cpp") {
       setMode("c_cpp");
     }
+    if (ext === "java"){
+      setMode("java")
+    }
   };
 
   return (
@@ -132,6 +135,7 @@ const App = () => {
             >
               <option value="cpp">C++</option>
               <option value="py">Python</option>
+              <option value="java">Java</option>
             </select>
           </div>
           <div>
