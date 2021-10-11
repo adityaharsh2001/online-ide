@@ -10,7 +10,6 @@ mongoose.connect(uri,
       if(err) throw err;
       console.log('connected to MongoDB')
   });
-    
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
