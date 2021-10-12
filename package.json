@@ -31,6 +31,7 @@
     "react-ace": "^9.4.3",
     "react-bootstrap": "^1.6.1",
     "react-loader-spinner": "^4.0.0",
+    "redis": "^3.1.2",
     "uuid": "^8.3.2"
   },
   "repository": "git@github.com:adityaharsh2001/online-ide.git"
