@@ -14,6 +14,8 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
   if (job === undefined) {
     throw Error(`cannot find Job with id ${jobId}`);
   }
+
+  
   try {
     let output;
     job["startedAt"] = new Date();
