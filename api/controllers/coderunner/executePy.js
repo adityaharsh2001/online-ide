@@ -11,6 +11,7 @@ const executePy = (filepath) => {
         `cd ${filepath[0]} &&  python3 main.py < ${file}.txt `,
         {
           shell: true,
+          maxBuffer: 50000
         }
         // (error, stdout, stderr) => {
         //   error && reject({ error, stderr });

@@ -9,6 +9,7 @@ const executeJAVA = async (filepath) => {
       `cd ${filepath[0]} && javac ${file}.java && java ${file}`,
       {
         shell: true,
+        maxBuffer: 50000
       }
       // (error, stdout, stderr) => {
       //   error && reject({ error, stderr });

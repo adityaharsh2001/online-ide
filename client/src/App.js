@@ -13,7 +13,7 @@ import "ace-builds/src-noconflict/ext-emmet"
 import "brace/ext/language_tools";
 import template from "./lib/templates";
 import "ace-builds/src-noconflict/theme-dracula";
-import uuid from "uuid";
+import {v1 as uuid} from "uuid";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
@@ -51,7 +51,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
-        "http://localhost:5000/run",
+        "http://localhost:8000/run",
         payload
       );
       // console.log(data);
@@ -61,7 +61,7 @@ const App = () => {
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://localhost:5000/status",
+          "http://localhost:8000/status",
           { params: { id: data.jobid } }
         );
 
