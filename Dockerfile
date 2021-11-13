@@ -29,6 +29,6 @@ COPY . .
 
 EXPOSE 6379
 
-EXPOSE 5000
+EXPOSE 8000
 
 CMD ["sh", "-c", "redis-server > /dev/null 2>&1 & npm start"]

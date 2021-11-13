@@ -1,13 +1,20 @@
-FROM node:latest
-WORKDIR /opt/app/src
+# Dockerfile for React client
 
-COPY package.json ./
-COPY yarn.lock ./
+# Build react client
+FROM node:14.18.1
 
-RUN yarn
+# Working directory be app
+WORKDIR /usr/src/app
 
-COPY . . 
+COPY package*.json ./
+
+###  Installing dependencies
+
+RUN npm install
+
+# copy local files to app folder
+COPY . .
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm start"]
+CMD ["npm","start"]
