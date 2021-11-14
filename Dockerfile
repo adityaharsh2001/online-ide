@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:alpine
 
 WORKDIR /opt/app/src
 
@@ -21,9 +21,10 @@ COPY yarn.lock ./
 RUN yarn
 
 RUN npm install --no-optional && npm cache clean --force
-RUN npm i -g nodemon
 
 # USER ide-geek
+
+RUN useradd -u 8877 ide-geek
 
 COPY . . 
 
