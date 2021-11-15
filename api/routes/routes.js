@@ -7,6 +7,9 @@ const { generateFile } = require("../controllers/coderunner/generateFile");
 const {addJobToQueue} = require('../controllers/queue')
 const Job = require("../modals/Job");
 
+router.get("/", (req, res) => {
+  res.send(`GeekyAdi Is God`);
+})
 
 router.get("/status", async(req, res) => {
   const jobid = req.query.id;

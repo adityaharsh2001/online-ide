@@ -51,7 +51,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
-        "http://localhost:8000/run",
+        "http://134.209.156.120:8000/run",
         payload
       );
       // console.log(data);
@@ -61,7 +61,7 @@ const App = () => {
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://localhost:8000/status",
+          "http://134.209.156.120:8000/status",
           { params: { id: data.jobid } }
         );
 
