@@ -51,7 +51,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
-        "http://134.209.156.120:8000/run",
+        "http://127.0.0.1:8000/api/run",
         payload
       );
       // console.log(data);
@@ -61,7 +61,7 @@ const App = () => {
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://134.209.156.120:8000/status",
+          "http://127.0.0.1:8000/api/status",
           { params: { id: data.jobid } }
         );
 
@@ -153,8 +153,8 @@ const App = () => {
 
       {loading? (<div className="logo">
         <span className="left">&#123;</span>
-        <span class="right">&#125;</span>
-        <span class="text">
+        <span className="right">&#125;</span>
+        <span className="text">
           IDE
           <br />
           <strong>GEEK</strong>
