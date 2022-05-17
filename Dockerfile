@@ -1,5 +1,4 @@
-FROM node:alpine
-
+FROM node:16
 WORKDIR /opt/app/src
 
 
@@ -16,20 +15,14 @@ RUN  apt-get update && apt-get install -y redis-server
 
 COPY package.json ./
 
-COPY yarn.lock ./
-
-RUN yarn
-
 RUN npm install --no-optional && npm cache clean --force
 
 # USER ide-geek
 
-RUN useradd -u 8877 ide-geek
-
 COPY . . 
 
-EXPOSE 6379
+EXPOSE $NODE_LOCAL_PORT
 
-EXPOSE 8000
+EXPOSE $NODE_DOCKER_PORT
 
 CMD ["sh", "-c", "redis-server > /dev/null 2>&1 & npm start"]

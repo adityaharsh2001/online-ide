@@ -1,60 +1,32 @@
-version: '3.7'
-
+version: '3.8'
 services:
-  redis:
-    image: "redis:alpine"
+
+  api:
+    build: ./
+    restart: unless-stopped
+    env_file: ./.env
     ports:
-      - "6379:6379"
-    expose:
-      - 6379
-    restart:
-      always
-    networks:
-      - app-network
-    command: redis-server
-  server:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    image: server
-    container_name: myapp-node-server
-    command: redis-server > /dev/null 2>&1 & npm start
-    volumes:
-      - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - 'redis-server'
-    ports:
-      - "8000:8000"
-    env_file: .env
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     environment:
-      - NODE_ENV=development
+      - PORT
+      - ATLAS_URI
+      - CLIENT_ORIGIN=$CLIENT_ORIGIN
     networks:
-      - app-network
-   
+      - backend
+      - frontend
   client:
+    depends_on:
+      - api
     build:
       context: ./client
-      dockerfile: Dockerfile
-    image: client
-    container_name: myapp-react-client
-    command: npm start
-    volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
-    depends_on:
-      - server
+      args:
+        - REACT_APP_API_BASE_URL=$CLIENT_API_BASE_URL
     ports:
-      - "3000:3000"
+      - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
     networks:
-      - app-network
-
+      - frontend  
+volumes: 
+  db:
 networks:
-    app-network:
-        driver: bridge
-
-volumes:
-    data-volume:
-    node_modules:
-    web-root:
-      driver: local
+  backend:
+  frontend:

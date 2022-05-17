@@ -1,20 +1,25 @@
-# Dockerfile for React client
+# Stage 1
+FROM node:16 as build-stage
 
-# Build react client
-FROM node:14.18.1
 
-# Working directory be app
-WORKDIR /usr/src/app
+WORKDIR /client/
 
-COPY package*.json ./
-
-###  Installing dependencies
-
+COPY package.json .
 RUN npm install
 
-# copy local files to app folder
 COPY . .
 
-EXPOSE 3000
+ARG REACT_APP_API_BASE_URL
 
-CMD ["npm","start"]
+ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
+
+RUN npm run build
+# Stage 2
+
+FROM nginx:1.17.0-alpine
+
+COPY --from=build-stage /client/build /usr/share/nginx/html
+
+EXPOSE $REACT_DOCKER_PORT
+
+CMD nginx -g 'daemon off;'
