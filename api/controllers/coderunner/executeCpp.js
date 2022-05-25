@@ -12,11 +12,6 @@ const executeCpp = (filepath) => {
           shell: true,
           maxBuffer: 50000
         }
-        // (error, stdout, stderr) => {
-        //   error && reject({ error, stderr });
-        //   stderr && reject(stderr);
-        //   resolve(stdout);
-        // }
       );
       run.stdout.on("data", (data) => {
         resolve(data);
@@ -29,6 +24,7 @@ const executeCpp = (filepath) => {
       });
     } catch (e) {
       reject(e);
+      
     }
   });
 

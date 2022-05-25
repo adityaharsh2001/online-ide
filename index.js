@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const uri = process.env.ATLAS_URI;
 const path = require("path");
+const cors = require("cors");
 
 mongoose.connect(
   uri,
@@ -15,7 +16,10 @@ mongoose.connect(
     console.log("connected to MongoDB");
   }
 );
-app.use(cors());
+app.use(cors({
+  allowOrigin: "*",
+  AccessControlAllowOrigin: "*",
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

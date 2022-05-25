@@ -51,7 +51,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
-        "http://127.0.0.1:8080/api/run",
+        "https://geekyadi.codes/run",
         payload
       );
       // console.log(data);
@@ -61,7 +61,7 @@ const App = () => {
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://127.0.0.1:8080/api/status",
+          "https:/geekyadi.codes/status",
           { params: { id: data.jobid } }
         );
 
