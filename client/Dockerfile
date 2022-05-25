@@ -6,7 +6,6 @@ WORKDIR /client/
 
 COPY package.json .
 RUN npm install
-
 COPY . .
 
 ARG REACT_APP_API_BASE_URL
