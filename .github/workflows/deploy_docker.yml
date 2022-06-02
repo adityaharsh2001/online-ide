@@ -15,7 +15,7 @@ jobs:
           username: ${{ secrets.SSH_ROOT_USER }} # User of the server you want to ssh into
           port: 22
           script: |
-            git clone git@github.com:adityaharsh2001/online-ide.git 
+            git -C online-ide pull || git clone git@github.com:adityaharsh2001/online-ide.git 
             echo 'Deployment successful to digital ocean' 
     env:
       CI: true
