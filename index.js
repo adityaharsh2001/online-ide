@@ -22,12 +22,15 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
 //app.use(express.static(path.join(__dirname, './client/build')));
-const root  = path.join(__dirname, 'client', 'build')
-app.use(express.static(root));
-app.get("*", (req, res) => {
-    res.sendFile('index.html', { root });
-});
+//const root  = path.join(__dirname, 'client', 'build')
+//app.use(express.static(root));
+//app.get("*", (req, res) => {
+//    res.sendFile('index.html', { root });
+//});
+app.use(express.static(path.join(__dirname, './client/build')));
+>>>>>>> 46d3af7e6683e4fd28f83a1ba947c5b1e0ae3261
 
 app.use("/api", routes);
 
