@@ -24,7 +24,6 @@ const App = () => {
   const [jobId, SetJobId] = useState("");
   const [fetching, isFetching] = useState(false);
   const [loading, isLoading] = useState(true);
-
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,7 +50,7 @@ const App = () => {
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
-        "https://geekyadi.codes/run",
+        `/api/run`,
         payload
       );
       // console.log(data);
@@ -61,7 +60,7 @@ const App = () => {
 
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "https:/geekyadi.codes/status",
+          `/api/status`,
           { params: { id: data.jobid } }
         );
 

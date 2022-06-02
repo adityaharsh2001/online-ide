@@ -2,7 +2,7 @@ const express = require("express");
 const routes = require("./api/routes/routes");
 const app = express();
 const mongoose = require("mongoose");
-require("dotenv").config();
+require('dotenv').config();
 const uri = process.env.ATLAS_URI;
 const path = require("path");
 const cors = require("cors");
@@ -22,7 +22,7 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, './client/build')));
+// app.use(express.static(path.join(__dirname, './client/build')));
 
 app.use("/api", routes);
 
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
   res.sendfile(path.join(__dirname, './client/public', 'index.html'));
 });
 
-const PORT=process.env.PORT
+const PORT=process.env.NODE_DOCKER_PORT
 app.listen(PORT || 8000, () => {
   console.log(`Listening on port ${PORT}`);
 });
