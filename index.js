@@ -29,8 +29,6 @@ app.use(express.json());
 //app.get("*", (req, res) => {
 //    res.sendFile('index.html', { root });
 //});
-app.use(express.static(path.join(__dirname, './client/build')));
->>>>>>> 46d3af7e6683e4fd28f83a1ba947c5b1e0ae3261
 
 app.use("/api", routes);
 
