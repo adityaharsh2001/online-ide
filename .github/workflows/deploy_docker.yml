@@ -18,7 +18,7 @@ jobs:
             git -C online-ide pull || git clone git@github.com:adityaharsh2001/online-ide.git 
             docker-compose rm -f
             docker-compose pull
-            docker compose -f /root/online-id/docker-compose.yml -p online_ide up --build --no-cache --remove-orphans -d
+            ls
             docker-compose stop -t 1
             echo 'Deployment successful to digital ocean'
     env:
