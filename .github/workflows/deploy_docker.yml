@@ -7,7 +7,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy NodeJS app
+      - name: Clone or pull the changes to repo
         uses: appleboy/ssh-action@v0.1.2
         with:
           host: ${{secrets.SSH_HOST}} # IP address of the server you wish to ssh into
@@ -16,7 +16,11 @@ jobs:
           port: 22
           script: |
             git -C online-ide pull || git clone git@github.com:adityaharsh2001/online-ide.git 
-            echo 'Deployment successful to digital ocean' 
+            docker-compose rm -f
+            docker-compose pull
+            cd online-ide &&  docker compose --project-name online_ide up --build --remove-orphans -d
+            docker-compose stop -t 1
+            echo 'Deployment successful to digital ocean'
     env:
       CI: true
       
