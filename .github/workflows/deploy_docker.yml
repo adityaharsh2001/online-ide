@@ -16,9 +16,9 @@ jobs:
           port: 22
           script: |
             git -C online-ide pull || git clone git@github.com:adityaharsh2001/online-ide.git 
-            docker system prune --all --force
+            docker system prune --all --force -y
             docker compose -f /root/online-ide/docker-compose.yml -p online_ide up --build --remove-orphans -d
-            docker-compose stop -t 1
+            docker-compose -f /root/online-ide/docker-compose.yml stop -t 1
             echo 'Deployment successful to digital ocean'
     env:
       CI: true
