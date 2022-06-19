@@ -19,10 +19,11 @@ router.get("/status", async(req, res) => {
   // console.log("status", jobid);
   try {
     const job = await Job.findById(jobid);
+    console.log("job", job)
     if (job === undefined){ 
       return res.status(404).json({success: false, error: "Invalid Job ID"});
     }
-    return res.status(200).json({success: true, job});
+    else return res.status(200).json({success: true, job});
   }
   catch{
     // console.log(err)
@@ -47,31 +48,8 @@ router.post("/run", async (req, res) => {
     // console.log(job);
     res.status(201).json({success: true, jobid})
 
-    // job["startedAt"] = new Date();
-
-    // if (ext === "cpp") output = await executeCpp(filepath);
-    // else if (ext === "py") {
-    //   output = await executePy(filepath);
-    // }
-
-    // job["CompiledAt"] = new Date();
-    // job["status"] = "success";
-    // job["output"] = output;
-    
-    // await job.save();
-  
-    // console.log(job)
-    
-    // return res.json({ filepath, output });
   } catch (err) {
     
-    // job["CompletedAt"] = new Date();
-    // job["status"] = "error";
-    // // console.log(err);
-    // job["output"] = JSON.stringify(err)
-    
-    // await job.save();
-    // console.log(job)
     res.status(500).json({success: false, err: JSON.stringify(err) });
   }
 });

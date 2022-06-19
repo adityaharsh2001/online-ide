@@ -1,6 +1,6 @@
 FROM node:16
 WORKDIR /opt/app/src
-
+ENV NODE_ENV=production
 
 
 # RUN groupadd --gid 5000 ide-geek \

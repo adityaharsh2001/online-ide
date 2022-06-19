@@ -11,11 +11,6 @@ const executeJAVA = async (filepath) => {
         shell: true,
         maxBuffer: 50000
       }
-      // (error, stdout, stderr) => {
-      //   error && reject({ error, stderr });
-      //   stderr && reject(stderr);
-      //   resolve(stdout);
-      // }
     );
     run.stderr.on("data", (data) => {
       resolve(String(data));
