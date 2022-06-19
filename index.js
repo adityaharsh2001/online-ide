@@ -1,5 +1,5 @@
 const express = require("express");
-const routes = require("./api/routes/routes");
+const routes = require("./routes/routes");
 const app = express();
 const mongoose = require("mongoose");
 require('dotenv').config();
