@@ -165,14 +165,17 @@ const App = () => {
 
               <option value="dracula">dracula</option>
               <option value="monokai">monokai</option>
-              <option value="github">Github</option>
-              <option value="tomorrow">Tomorrow</option>
-              <option value="xcode">Xcode</option>
-              <option value="kuroir">Kuroir</option>
-              <option value="textmate">Textmate</option>
-              <option value="solarized_dark">Solarized Dark</option>
-              <option value="solarized_light">Solarized Light</option>
-              <option value="terminal">Terminal</option>
+              <option value="github">github</option>
+              <option value="tomorrow_night_blue">tomorrow_night_blue</option>
+              <option value="tomorrow_night_bright">tomorrow_night_bright</option>
+              <option value="tomorrow_night_eighties">tomorrow_night_eighties</option>
+              <option value="twilight">twilight</option>
+              <option value="xcode">xcode</option>
+              <option value="textmate">textmate</option>
+              <option value="terminal">terminal</option>
+              <option value="solarized_dark">solarized_dark</option>
+              <option value="solarized_light">solarized_light</option>
+              <option value="sqlserver">sqlserver</option>
             </select>
           </div>
           <div>
