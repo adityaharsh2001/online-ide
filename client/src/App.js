@@ -13,12 +13,26 @@ import "ace-builds/src-noconflict/ext-emmet"
 import "brace/ext/language_tools";
 import template from "./lib/templates";
 import "ace-builds/src-noconflict/theme-dracula";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-tomorrow_night";
+import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
+import "ace-builds/src-noconflict/theme-tomorrow_night_bright";
+import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
+import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/theme-xcode";
+import "ace-builds/src-noconflict/theme-textmate";
+import "ace-builds/src-noconflict/theme-terminal";
+import "ace-builds/src-noconflict/theme-solarized_dark";
+import "ace-builds/src-noconflict/theme-solarized_light";
+import "ace-builds/src-noconflict/theme-sqlserver";
 import {v1 as uuid} from "uuid";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
   const [ext, SetExt] = useState("cpp");
   const [output, setOutput] = useState("$ Output");
+  const [theme, setTheme] = useState("dracula");
   const [input, SetInput] = useState("");
   const [status, SetStatus] = useState("");
   const [jobId, SetJobId] = useState("");
@@ -45,15 +59,12 @@ const App = () => {
       input,
     };
     try {
-      // SetJobId("");
-      
       SetStatus("");
       setOutput("");
       const { data } = await axios.post(
         `/api/run`,
         payload
       );
-      // console.log(data);
       if (data.job) setOutput(data.jobOutput);
 
       let intervalId;
@@ -95,6 +106,11 @@ const App = () => {
     setCode(newValue);
   };
 
+  const setThemeHandler = (e) => {
+    console.log(e.target.value);
+  };
+
+
   const setmode = (ext) => {
     if (ext === "py") {
       setMode("python");
@@ -106,6 +122,7 @@ const App = () => {
       setMode("java")
     }
   };
+
 
   return (
     <div>
@@ -135,6 +152,27 @@ const App = () => {
               <option value="cpp">C++</option>
               <option value="py">Python</option>
               <option value="java">Java</option>
+            </select>
+          </div>
+
+          <div className="select">
+            <select
+              onChange={(e) => {
+                setTheme(e.target.value);
+                console.log(e.target.value);
+              }}
+            >
+
+              <option value="dracula">dracula</option>
+              <option value="monokai">monokai</option>
+              <option value="github">Github</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="xcode">Xcode</option>
+              <option value="kuroir">Kuroir</option>
+              <option value="textmate">Textmate</option>
+              <option value="solarized_dark">Solarized Dark</option>
+              <option value="solarized_light">Solarized Light</option>
+              <option value="terminal">Terminal</option>
             </select>
           </div>
           <div>
@@ -171,11 +209,10 @@ const App = () => {
           <AceEditor
             className="editor"
             mode={mode}
-            theme="dracula"
+            theme={theme}
             height="100%"
             onChange={onChange}
             value={code}
-            minLines="50"
             style={{ width: "100%" }}
             editorProps={{ $blockScrolling: true }}
             showPrintMargin={false}
@@ -190,22 +227,11 @@ const App = () => {
             }}
           />
 
-          {/* <textarea
-          rows="20"
-          cols="75"
-          value={code}
-          onChange={(e) => {
-            setCode(e.target.value);
-    
-          }}
-        > */}
-          {/* </textarea> */}
-
           <div style={{
             maxWidth:"50vw"
           }}>
             <AceEditor
-              theme="dracula"
+              theme={theme}
               value={output + "\n" + status}
               readOnly={true}
               style={{ height: "50%" }}
@@ -218,7 +244,7 @@ const App = () => {
               }}
             />
             <AceEditor
-              theme="dracula"
+              theme={theme}
               placeholder="STDIN"
               value={input}
               style={{ height: "50%" }}

@@ -15,10 +15,12 @@ mongoose.connect(
     console.log("connected to MongoDB");
   }
 );
+
 app.use(cors({
   allowOrigin: "*",
   AccessControlAllowOrigin: "*",
 }));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
