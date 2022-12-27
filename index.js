@@ -9,7 +9,6 @@ const cors = require("cors");
 
 mongoose.connect(
   uri,
-  { useNewUrlParser: true, useUnifiedTopology: true },
   (err) => {
     if (err) throw err;
     console.log("connected to MongoDB");
@@ -27,10 +26,10 @@ app.use(express.json());
 app.use("/api", routes);
 
 app.get('/', (req, res) => {
-  res.sendfile(path.join(__dirname, './client/public', 'index.html'));
+  res.sendFile(path.join(__dirname, './client/public', 'index.html'));
 });
 
-const PORT=process.env.NODE_DOCKER_PORT
-app.listen(PORT || 8000, () => {
+const PORT = process.env.NODE_DOCKER_PORT || 8080;
+app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });

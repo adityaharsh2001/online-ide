@@ -19,14 +19,14 @@ router.get("/status", async(req, res) => {
   // console.log("status", jobid);
   try {
     const job = await Job.findById(jobid);
-    console.log("job", job)
+    // console.log("job", job)
     if (job === undefined){ 
       return res.status(404).json({success: false, error: "Invalid Job ID"});
     }
     else return res.status(200).json({success: true, job});
   }
   catch{
-    // console.log(err)
+    console.log(err)
     return res.status(400).json({success: false, error: JSON.stringify(err)})
   }
 });
@@ -40,7 +40,7 @@ router.post("/run", async (req, res) => {
   }
   let job;  
   try {
-    console.log(ext);
+    // console.log(ext);
     const filepath = await generateFile(jobId, ext, code, input);
     job = await new Job({ext, filepath}).save()
     const jobid = job["_id"];

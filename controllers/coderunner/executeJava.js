@@ -17,7 +17,7 @@ const executeJAVA = async (filepath) => {
     });
     run.stdout.on("data", (data) => {
       resolve(data);
-      console.log(data);
+      // console.log(data);
     });
   });
 

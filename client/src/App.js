@@ -9,24 +9,12 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/snippets/c_cpp";
 import "ace-builds/src-noconflict/snippets/python";
-import "ace-builds/src-noconflict/ext-emmet"
+import "ace-builds/src-noconflict/ext-emmet";
 import "brace/ext/language_tools";
 import template from "./lib/templates";
-import "ace-builds/src-noconflict/theme-dracula";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-tomorrow_night";
-import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
-import "ace-builds/src-noconflict/theme-tomorrow_night_bright";
-import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
-import "ace-builds/src-noconflict/theme-twilight";
-import "ace-builds/src-noconflict/theme-xcode";
-import "ace-builds/src-noconflict/theme-textmate";
-import "ace-builds/src-noconflict/theme-terminal";
-import "ace-builds/src-noconflict/theme-solarized_dark";
-import "ace-builds/src-noconflict/theme-solarized_light";
-import "ace-builds/src-noconflict/theme-sqlserver";
-import {v1 as uuid} from "uuid";
+import "ace-builds/webpack-resolver";
+import { v1 as uuid } from "uuid";
+import baseURL from "./axios";
 const App = () => {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("c_cpp");
@@ -38,10 +26,10 @@ const App = () => {
   const [jobId, SetJobId] = useState("");
   const [fetching, isFetching] = useState(false);
   const [loading, isLoading] = useState(true);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      isLoading(false)
+      isLoading(false);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -51,7 +39,7 @@ const App = () => {
     setCode(template[ext]);
   }, [ext]);
   const handleSubmit = async () => {
-    isFetching(true)
+    isFetching(true);
     const payload = {
       jobId,
       ext,
@@ -61,22 +49,17 @@ const App = () => {
     try {
       SetStatus("");
       setOutput("");
-      const { data } = await axios.post(
-        `/api/run`,
-        payload
-      );
+      const { data } = await baseURL.post(`/run`, payload);
       if (data.job) setOutput(data.jobOutput);
 
       let intervalId;
 
       intervalId = setInterval(async () => {
-        const { data: dataRes } = await axios.get(
-          `/api/status`,
-          { params: { id: data.jobid } }
-        );
+        const { data: dataRes } = await baseURL.get(`/status`, {
+          params: { id: data.jobid },
+        });
 
         const { success, job, error } = dataRes;
-        // console.log(dataRes);
         if (success) {
           const { status: jobStatus, output: jobOutput } = job;
           SetStatus(jobStatus);
@@ -86,7 +69,6 @@ const App = () => {
           clearInterval();
           clearInterval(intervalId);
         } else {
-          // console.error(error);
           setOutput(error);
         }
       }, 1000);
@@ -102,14 +84,12 @@ const App = () => {
   };
 
   const onChange = (newValue) => {
-    // console.log("change", newValue);
     setCode(newValue);
   };
 
   const setThemeHandler = (e) => {
     console.log(e.target.value);
   };
-
 
   const setmode = (ext) => {
     if (ext === "py") {
@@ -118,11 +98,50 @@ const App = () => {
     if (ext === "cpp") {
       setMode("c_cpp");
     }
-    if (ext === "java"){
-      setMode("java")
+    if (ext === "java") {
+      setMode("java");
     }
   };
 
+  const themes = {
+    Dracula: "dracula",
+    Monokai: "monokai",
+    Github: "github",
+    Terminal: "terminal",
+    Xcode: "xcode",
+    Textmate: "textmate",
+    Solarized_Light: "solarized_light",
+    Solarized_Dark: "solarized_dark",
+    Tomorrow_Night_Blue: "tomorrow_night_blue",
+    Tomorrow_Night_Bright: "tomorrow_night_bright",
+    Tomorrow_Night_Eighties: "tomorrow_night_eighties",
+    Tomorrow_Night: "tomorrow_night",
+    Tomorrow: "tomorrow",
+    Twilight: "twilight",
+    Vibrant_Ink: "vibrant_ink",
+    Kuroir: "kuroir",
+    Katzenmilch: "katzenmilch",
+    SQLServer: "sqlserver",
+    Cobalt: "cobalt",
+    Clouds_Midnight: "clouds_midnight",
+    Clouds: "clouds",
+    Chrome: "chrome",
+    Cloud9: "cloud9",
+    Chrimson_Editor: "crimson_editor",
+    Dawn: "dawn",
+    Dreamweaver: "dreamweaver",
+    Eiffel: "eiffel",
+    Espresso_Libre: "espresso_libre",
+    Idle_Fingers: "idle_fingers",
+    KrTheme: "kr_theme",
+    Merbivore_Soft: "merbivore_soft",
+    Merbivore: "merbivore",
+    MonoIndustrial: "mono_industrial",
+    Monokai: "monokai",
+    Pastel_on_Dark: "pastel_on_dark",
+    Solarized_Dark: "solarized_dark",
+    Solarized_Light: "solarized_light",
+  };
 
   return (
     <div>
@@ -144,8 +163,10 @@ const App = () => {
                 let response = window.confirm(
                   "Warning Switching The Language will remove your chnages"
                 );
-                if (response){ SetExt(e.target.value);
-                setmode(e.target.value);}
+                if (response) {
+                  SetExt(e.target.value);
+                  setmode(e.target.value);
+                }
               }}
               value={ext}
             >
@@ -162,25 +183,16 @@ const App = () => {
                 console.log(e.target.value);
               }}
             >
-
-              <option value="dracula">dracula</option>
-              <option value="monokai">monokai</option>
-              <option value="github">github</option>
-              <option value="tomorrow_night_blue">tomorrow_night_blue</option>
-              <option value="tomorrow_night_bright">tomorrow_night_bright</option>
-              <option value="tomorrow_night_eighties">tomorrow_night_eighties</option>
-              <option value="twilight">twilight</option>
-              <option value="xcode">xcode</option>
-              <option value="textmate">textmate</option>
-              <option value="terminal">terminal</option>
-              <option value="solarized_dark">solarized_dark</option>
-              <option value="solarized_light">solarized_light</option>
-              <option value="sqlserver">sqlserver</option>
+              {
+                Object.keys(themes).map((theme) => (
+                  <option value={themes[theme]}>{theme}</option>
+                ))
+                
+              }
             </select>
           </div>
           <div>
-            <button onClick={handleSubmit} disabled = {fetching}>
-              
+            <button onClick={handleSubmit} disabled={fetching}>
               {fetching ? (
                 <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} />
               ) : (
@@ -189,17 +201,20 @@ const App = () => {
             </button>
           </div>
         </header>
-       </div>
+      </div>
 
-      {loading? (<div className="logo">
-        <span className="left">&#123;</span>
-        <span className="right">&#125;</span>
-        <span className="text">
-          IDE
-          <br />
-          <strong>GEEK</strong>
-        </span>
-      </div>): ( <div
+      {loading ? (
+        <div className="logo">
+          <span className="left">&#123;</span>
+          <span className="right">&#125;</span>
+          <span className="text">
+            IDE
+            <br />
+            <strong>GEEK</strong>
+          </span>
+        </div>
+      ) : (
+        <div
           style={{
             display: "flex",
             position: "absolute",
@@ -220,8 +235,8 @@ const App = () => {
             editorProps={{ $blockScrolling: true }}
             showPrintMargin={false}
             highlightActiveLine={true}
-            enableBasicAutocompletion = {true}
-            enableLiveAutocompletion={true} 
+            enableBasicAutocompletion={true}
+            enableLiveAutocompletion={true}
             enableSnippets={true}
             setOptions={{
               enableBasicAutocompletion: true,
@@ -230,9 +245,11 @@ const App = () => {
             }}
           />
 
-          <div style={{
-            maxWidth:"50vw"
-          }}>
+          <div
+            style={{
+              maxWidth: "50vw",
+            }}
+          >
             <AceEditor
               theme={theme}
               value={output + "\n" + status}

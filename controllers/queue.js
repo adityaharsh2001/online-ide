@@ -39,7 +39,7 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
   }
 });
 jobQueue.on("completed", () => {
-  console.log("completed")
+  // console.log("completed")
 })
 jobQueue.on("failed", (error) => {
   console.error(error.data.id, error.failedReason);

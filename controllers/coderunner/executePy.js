@@ -21,7 +21,7 @@ const executePy = (filepath) => {
       );
       var stderr=""
       run.stderr.on("data", (data) => {
-        console.log(String(data));
+        // console.log(String(data));
         stderr += data;
       });
       run.stdout.on("data", (data) => {
